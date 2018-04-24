@@ -1,0 +1,57 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Picked</ion-title>
+    <ion-buttons end>
+        <button ion-button (click)="logout()">
+          <ion-icon name="log-out"></ion-icon>
+        
+        </button>
+      </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+   
+
+  <ion-segment [(ngModel)]="icons" color="#3297cf" padding>
+      <ion-segment-button value="g" (ionSelect)="takePhoto()">
+        to pick ({{totalUnfulfilledOrders}})
+      </ion-segment-button>
+      <ion-segment-button value="d" (ionSelect)="getPhoto()">
+        Packed (0)
+      </ion-segment-button>
+    </ion-segment> 
+
+  <ion-refresher (ionRefresh)="doRefresh($event)" >
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+<ion-list radio-group >
+  
+  <button ion-item text-wrap *ngFor="let pickedOrder of pickedOrders" >
+       
+   <ion-label>
+     <strong>#{{pickedOrder.orderName}}</strong> <br>
+     <ion-note>{{pickedOrder.date | date: 'dd/MM/yyyy' }} </ion-note><br>
+     <ion-note>Picker: {{pickedOrder.pickerName}} </ion-note><br>
+     <ion-badge color="secondary">{{pickedOrder.status}}</ion-badge>
+    
+  </ion-label>
+    <ion-radio  (ionSelect)="getPickedOrder(pickedOrder.orderId, pickedOrder.orderName)" color="royal" ></ion-radio>
+    
+  </button>
+</ion-list>
+
+<ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+<ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+</ion-content>
+
+<ion-fab *ngIf="isChecked">
+<button (click)="showProducts()" ion-fab fab-bottom fab-right>
+  <ion-icon name="eye"></ion-icon>
+</button>
+
+</ion-fab>

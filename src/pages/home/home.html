@@ -1,14 +1,60 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
+  <ion-navbar color="primary">
+    <ion-title>Orders</ion-title>
+    <ion-buttons end>
+        <button ion-button (click)="logout()">
+          <ion-icon name="log-out"></ion-icon>
+        
+        </button>
+      </ion-buttons>
   </ion-navbar>
 </ion-header>
 
+
+
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+    <ion-segment [(ngModel)]="icons" color="#3297cf" padding>
+        <ion-segment-button value="g" (ionSelect)="takePhoto()">
+          to pick ({{totalUnfulfilledOrders}})
+        </ion-segment-button>
+        <ion-segment-button value="d" (ionSelect)="getPhoto()">
+          Packed (0)
+        </ion-segment-button>
+      </ion-segment> 
+
+    <ion-refresher (ionRefresh)="doRefresh($event)" >
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+  <ion-list>
+    
+    <button ion-item text-wrap *ngFor="let order of orders" >
+         
+     <ion-label>
+       <strong>{{order.name}}</strong> <br>
+       EUR {{order.total_price}} <br>
+       {{order.customer.first_name}} {{order.customer.last_name}} <br>
+       <ion-badge color="secondary">{{order.financial_status}}</ion-badge>
+       <ion-badge color="primary">{{order.tags}}</ion-badge>
+       <ion-badge *ngIf="!order.fulfillment_status" color="danger">Unfulfilled</ion-badge>
+       <ion-badge *ngIf="order.fulfillment_status" color="danger">{{order.fulfillment_status}}</ion-badge>
+       
+    </ion-label>
+      <ion-checkbox [(ngModel)]="order.order_number" (ionChange)="updateOrdersToPick(order.order_number, order.id, order.name)" color="royal" checked="false">
+         
+      </ion-checkbox>
+      <ion-note item-end>{{order.created_at | date: 'dd/MM/yyyy' }}</ion-note>
+    </button>
+ </ion-list>
+
+ <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>
+
+<ion-fab *ngIf="readyToPick">
+  <button (click)="pick()" ion-fab fab-bottom fab-right>
+    <ion-icon name="hand"></ion-icon>
+  </button>
+
+</ion-fab>

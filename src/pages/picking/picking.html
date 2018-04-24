@@ -1,0 +1,57 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Picking</ion-title>
+    <ion-buttons end>
+        <button ion-button (click)="logout()">
+          <ion-icon name="log-out"></ion-icon>
+        
+        </button>
+      </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+   
+
+  <ion-segment [(ngModel)]="icons" color="#3297cf" padding>
+      <ion-segment-button value="g" (ionSelect)="takePhoto()">
+        to pick ({{totalUnfulfilledOrders}})
+      </ion-segment-button>
+      <ion-segment-button value="d" (ionSelect)="getPhoto()">
+        Packed (0)
+      </ion-segment-button>
+    </ion-segment> 
+
+  <ion-refresher (ionRefresh)="doRefresh($event)" >
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+<ion-list radio-group >
+  
+  <button ion-item text-wrap *ngFor="let picklist of pickingList" >
+       
+   <ion-label>
+     <strong>#{{picklist.orderNames}}</strong> <br>
+     <ion-note>{{picklist.date | date: 'dd/MM/yyyy' }} </ion-note><br>
+     <ion-note>Picker: {{picklist.pickerName}} </ion-note><br>
+     <ion-badge color="secondary">{{picklist.status}}</ion-badge>
+    
+  </ion-label>
+    <ion-radio  (ionSelect)="recreatePickList(picklist.id, picklist.orderIds, picklist.orderNames, picklist.productList)" color="royal" ></ion-radio>
+    
+  </button>
+</ion-list>
+
+<ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+<ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+</ion-content>
+
+<ion-fab *ngIf="readyToPick">
+<button (click)="pick()" ion-fab fab-bottom fab-right>
+  <ion-icon name="hand"></ion-icon>
+</button>
+
+</ion-fab>

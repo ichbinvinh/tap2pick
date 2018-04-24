@@ -1,0 +1,16 @@
+page-pick {
+
+    .ready-to-pack {
+        position: fixed;
+        bottom: 10%;
+        right: 5%;
+        z-index: 1000;
+     } 
+
+     .save-to-picking {
+        position: fixed;
+        bottom: 10%;
+        right: 25%;
+        z-index: 1000;
+     }
+}

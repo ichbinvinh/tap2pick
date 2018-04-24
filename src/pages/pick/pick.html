@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ordersToPickName}}</ion-title>
+        <ion-buttons end>
+        <button ion-button (click)="scanBarcode()">
+          <ion-icon name="barcode"></ion-icon>
+      </button> 
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-searchbar  
+[(ngModel)]="searchTerm" 
+(ionInput)="setFilteredItems()" >
+</ion-searchbar>
+
+<ion-content padding>
+    
+    <!-- <ion-segment [(ngModel)]="icons" color="#3297cf" padding>
+        <ion-segment-button value="barcode" (ionSelect)="scanBarcode()">
+          <ion-icon name="barcode"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>  -->
+
+    <!-- <ion-refresher (ionRefresh)="doRefresh($event)" >
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher> -->
+  <ion-list>
+    <ion-item-sliding *ngFor="let product of productList.productArr" [id]="product.id">
+    <button ion-item (click)="pickProduct(product.id)" >
+     
+      <ion-thumbnail item-start>
+        <img src="{{product.imgSrc}}">
+        
+      </ion-thumbnail>
+      
+      <p>{{product.title}}</p>
+      <p>{{product.variant_title}}</p>
+      <p>{{product.price}} €</p>
+      <ion-note item-end style="text-align:center"><span style="font-size:xx-large">{{product.quantity}}</span> <br> to pick</ion-note>
+      
+    </button>
+
+    <ion-item-options side="right">
+        <button ion-button color="light" ion-button (click)="takePicture(product.id)">
+            <ion-icon  name="camera"></ion-icon>
+            camera
+          </button>
+        <button ion-button color="secondary" ion-button (click)="repick(product.id)">
+            <ion-icon  name="repeat"></ion-icon>
+            repick
+          </button>
+       <button ion-button (click)="pickAll(product.id)">
+          <ion-icon name="done-all"></ion-icon>
+          pick all
+        </button>
+    </ion-item-options>
+
+    <ion-item-options side="left">
+        <ion-thumbnail  item-start>
+            <img src="{{product.imgByPicker}}" imageViewer />
+        </ion-thumbnail>
+        
+    </ion-item-options>
+
+  </ion-item-sliding>
+ </ion-list>
+
+ <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
+
+
+<!-- 
+  <button (click)="pack()" class="button button-full button-positive" *ngIf="readyToPack">
+    save pack list
+  </button>
+  
+  <button (click)="savePickingOrders()" class="button button-full button-assertive">
+    save pick list
+  </button> -->
+
+</ion-content>
+
+<ion-fab class="ready-to-pack" *ngIf="readyToPack">
+  <button (click)="saveToPickedList()" ion-fab fab-bottom fab-right>
+    <ion-icon name="cube"></ion-icon>
+  </button>
+
+</ion-fab>
+
+<ion-fab class="save-to-picking">
+  <button (click)="savePickingOrders()" ion-fab fab-bottom fab-right>
+    <ion-icon name="pause"></ion-icon>
+  </button>
+
+</ion-fab>
