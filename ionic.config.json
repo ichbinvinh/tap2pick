@@ -1,0 +1,8 @@
+{
+  "name": "tap2pick",
+  "app_id": "3ec5def5",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
