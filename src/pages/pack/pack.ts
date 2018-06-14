@@ -106,7 +106,7 @@ export class PackPage {
 }
 
 openShipModal() {
-  let myModal = this.modalCtrl.create(ShipPage, {'shipment': this.shipment, 'nullWeightItems': this.nullWeightItems.toString()});
+  let myModal = this.modalCtrl.create(ShipPage, {'pickedOder_orderId': this.pickedOrder_orderId,'shipment': this.shipment, 'nullWeightItems': this.nullWeightItems.toString()});
   myModal.present();
 }
 

@@ -52,7 +52,7 @@ export class PickingPage {
 
   pick() {
     // redirect to picking page
-    this.nav.push(PickPage, {ordersToPick: this.pickingListId.split('#'), ordersToPickName: this.ordersToPickName, productList: this.productList, id: this.id});
+    this.nav.push(PickPage, {ordersToPick: this.pickingListId.split('#'), ordersToPickName: this.ordersToPickName.split('#'), productList: this.productList, id: this.id});
   }
 
   delete() {

@@ -67,6 +67,10 @@ export class OrderServiceProvider {
     this.pickingOrders.update(pickingOrderId, {status: 'picked'});
   }
 
+  updateStatusPickedOrder(pickedOrderId: string) {
+    this.pickedOrders.update(pickedOrderId, {status: 'packed, labeled'});
+  }
+
   deletePickingOrder(pickingOrderId: string) {
     this.pickingOrders.remove(pickingOrderId);
   }
