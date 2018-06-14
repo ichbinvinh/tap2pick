@@ -14,18 +14,12 @@
 
 <ion-content padding>
    
-
-  <ion-segment [(ngModel)]="icons" color="#3297cf" padding>
-      <ion-segment-button value="g" (ionSelect)="takePhoto()">
-        to pick ({{totalUnfulfilledOrders}})
-      </ion-segment-button>
-      <ion-segment-button value="d" (ionSelect)="getPhoto()">
-        Packed (0)
-      </ion-segment-button>
-    </ion-segment> 
-
   <ion-refresher (ionRefresh)="doRefresh($event)" >
-      <ion-refresher-content></ion-refresher-content>
+      <ion-refresher-content 
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing..."></ion-refresher-content>
     </ion-refresher>
 <ion-list radio-group >
   
@@ -55,3 +49,10 @@
 </button>
 
 </ion-fab>
+
+<ion-fab *ngIf="readyToPick">
+  <button (click)="delete()" color="danger" class="delete" ion-fab fab-bottom fab-right>
+    <ion-icon name="remove"></ion-icon>
+  </button>
+  
+  </ion-fab>

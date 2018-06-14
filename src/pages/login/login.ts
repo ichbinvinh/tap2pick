@@ -48,8 +48,9 @@ export class LoginPage {
 
   public login() {
     
-    this.showLoading()
+    this.showLoading();
     this.auth.login(this.registerCredentials).subscribe(allowed => {
+      
       if (allowed) {
         setTimeout(() => {
         this.loading.dismiss();
@@ -59,9 +60,8 @@ export class LoginPage {
           storage.set('pickerName', this.pickerName);
           this.nav.push(TabsPage);
        
-        });
+        },error => alert(error +'. You can enable screen lock for your phone to continue.'));
         
-
         });
       } else {
         this.showError("Access denied");

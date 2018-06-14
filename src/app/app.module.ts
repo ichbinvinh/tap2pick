@@ -31,6 +31,7 @@ import { PickingPage } from '../pages/picking/picking';
 import { SecureStorage } from '@ionic-native/secure-storage';
 import { PickedPage } from '../pages/picked/picked';
 import { PackPage } from '../pages/pack/pack';
+import {ShipPage} from '../pages/ship/ship';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { PackPage } from '../pages/pack/pack';
     PickPage,
     PickingPage,
     PackPage,
-    PickedPage
+    PickedPage,
+    ShipPage
   ],
   imports: [
     HttpClientModule,
@@ -65,7 +67,8 @@ import { PackPage } from '../pages/pack/pack';
     PickPage,
     PickingPage,
     PackPage,
-    PickedPage
+    PickedPage,
+    ShipPage
   
   ],
   providers: [

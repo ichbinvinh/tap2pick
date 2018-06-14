@@ -1,17 +1,16 @@
-page-picking {
+page-ship {
 
-    ion-fab {
+      ion-fab {
         position: fixed;
-        bottom: 80px;
+        bottom: 40px;
         right: 20px;
         z-index: 1000;
      } 
 
      .delete {
         position: fixed;
-        bottom: 80px;
+        bottom: 40px;
         right: 90px;
         z-index: 1000;
      } 
-
 }

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {AlertController, Content, IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
+import {App, AlertController, Content, IonicPage, NavController, ViewController, NavParams, Platform} from 'ionic-angular';
 import { OrderServiceProvider } from '../../providers/order-service/order-service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Camera } from '@ionic-native/camera';
@@ -7,6 +7,7 @@ import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage
 import {Product, ProductList} from '../../models/productList-model';
 import { HomePage } from '../home/home';
 import { PickingPage } from '../picking/picking';
+import { PickedPage } from '../picked/picked';
 // import { processRecords } from 'ionic-angular/components/virtual-scroll/virtual-util';
 
 
@@ -38,7 +39,16 @@ export class PickPage {
 
   pickerName: string;
  
-  constructor(private secureStorage: SecureStorage, private alertCtrl: AlertController, public platform: Platform, private camera: Camera, private barcodeScanner: BarcodeScanner, public navCtrl: NavController, public navParams: NavParams, public orderService: OrderServiceProvider) {
+  constructor(private app: App, 
+              private secureStorage: SecureStorage, 
+              private alertCtrl: AlertController, 
+              public platform: Platform, 
+              private camera: Camera, 
+              private barcodeScanner: BarcodeScanner, 
+              public navCtrl: NavController,
+              public viewCtrl: ViewController, 
+              public navParams: NavParams, 
+              public orderService: OrderServiceProvider) {
     
     this.lineItems = null;
     this.readyToPack = false;
@@ -159,7 +169,7 @@ export class PickPage {
     
     let alert = this.alertCtrl.create({
       title: 'Confirm save',
-      message: 'Are you sure to save this pick list?',
+      message: 'Are you sure to save this picking order?',
       buttons: [
         {
           text: 'Cancel',
@@ -190,18 +200,13 @@ export class PickPage {
            }
             
             // redirect to Picking Page
-            this.navCtrl.push(PickingPage);         
+            this.dismiss();
+            //this.app.getRootNav().setRoot(PickingPage);      
           }
         }
       ]
     });
     alert.present();
-
-    
-
-    
-    
-    
 
   }
 
@@ -209,7 +214,7 @@ export class PickPage {
 
     let alert = this.alertCtrl.create({
       title: 'Confirm save',
-      message: 'Are you sure to save this pick list into picked list?',
+      message: 'Are you sure to save this picking order as picked order?',
       buttons: [
         {
           text: 'Cancel',
@@ -222,13 +227,17 @@ export class PickPage {
           text: 'Ok',
           handler: () => {
             // change status of pick list on firebase to "picked" on firebase
-            this.orderService.updateStatusPickingOrders(this.id);
+            
+            //this.orderService.updateStatusPickingOrders(this.id);
+            this.orderService.deletePickingOrder(this.id);
 
             // split orderslist in separat order and save on firebase
             this.orderService.addPackedOrders(this.ordersToPick, this.ordersToPickName, this.pickerName)
 
             // redirect to homepage
-            this.navCtrl.setRoot(HomePage); 
+            //this.navCtrl.push(HomePage); 
+            this.dismiss();
+            //this.app.getRootNav().setRoot(PickedPage);
           }
         }
       ]
@@ -236,6 +245,10 @@ export class PickPage {
     alert.present();
    
    
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
   }
 
 

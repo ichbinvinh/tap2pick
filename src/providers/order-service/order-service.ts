@@ -29,6 +29,7 @@ export class OrderServiceProvider {
     this.pickingOrdersRef.on('value', pickingList => {
       let lists= [];
       pickingList.forEach(list => {
+       
         lists.push(list.val());
         return false;
       });
@@ -66,6 +67,14 @@ export class OrderServiceProvider {
     this.pickingOrders.update(pickingOrderId, {status: 'picked'});
   }
 
+  deletePickingOrder(pickingOrderId: string) {
+    this.pickingOrders.remove(pickingOrderId);
+  }
+
+  deletePickedOrder(pickedOrderId: string) {
+    this.pickedOrders.remove(pickedOrderId);
+  }
+
   // addPackingOrders(_orderIds: string, products: string) {
   //   this.pickingOrders.push({
   //     orderIds: _orderIds,
@@ -83,7 +92,8 @@ export class OrderServiceProvider {
         newPickedOrderRef.set({
         id: newPickedOrderRef.key,
         orderId: _orderIds[i],
-        orderName: _orderNames.toString().split('#')[i],
+        //orderName:  _orderNames.toString().split('#')[i],
+        orderName:  _orderNames.length>1?_orderNames[i]:_orderNames,
         date: new Date().toISOString(),
         status: "picked",
         pickerName: _pickerName
@@ -128,6 +138,32 @@ export class OrderServiceProvider {
         
       
        }); 
+}
+
+loadShipLabel(id: string) {
+  alert("preparing get ship lable");
+  return new Promise(resolve => {  
+    // load  Orders of shop
+           this.http.getShipCloud('https://api.shipcloud.io/v1/shipments/'+id)
+           .map(res => res.json().label_url)
+           .subscribe(data => {
+             this.data = data;
+             resolve(this.data);
+           });
+       });
+}
+
+loadShippingAddressByOrderId(orderId: number) {
+  return new Promise(resolve => {
+       
+    this.http.get('https://giaohang.myshopify.com/admin/orders/'+orderId+'.json?fields=shipping_address')
+      .map(res => res.json().order.shipping_address)
+      .subscribe(data => {
+        this.data = data;
+        resolve(this.data);
+      });
+  });
+
 }
 
 loadOrdersByPage(pageno: number) {
@@ -210,19 +246,19 @@ getProductBarcode(productId: number) {
 
 // add tag for order ready to be pacekd
 updateOrdersTag(orderId: number, tag: string) {
-  var data = {
+  let data = {
     "order": {
       "id": orderId,
       "tags": tag
     }
-  }
+  };
   
   this.http.put('https://giaohang.myshopify.com/admin/orders/'+orderId+'.json', data)
   .map(respon => respon.json())
   .subscribe(res => {
       alert('Status of Order is saved!');
-    });
-  
+    }, err =>{alert(err);});
+   
 }
 
 

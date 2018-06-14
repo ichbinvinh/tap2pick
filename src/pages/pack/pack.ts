@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams, ModalController} from 'ionic-angular';
 import { OrderServiceProvider } from '../../providers/order-service/order-service';
 import {Product, ProductList} from '../../models/productList-model';
+import {ShipPage} from '../ship/ship';
 
 
 @IonicPage()
@@ -20,9 +21,36 @@ export class PackPage {
   pickedOrder_orderId: number;
   pickedOrder_orderName: string;
 
-  constructor(private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public orderService: OrderServiceProvider) {
+  shipment = {
+    firstname: '',
+    lastname: '',
+    street: '',
+    streetno: '',
+    city: '',
+    plz: '',
+    country: '',
+    telephone: '',
+    weight: 0,
+    package: '',
+    description: '',
+    carrier: '',
+    service: '',
+    packagetype: ''
+
+  };
+  shippingAddress: any;
+  weight: 0;
+  nullWeightItems: number;
+
+  constructor(public modalCtrl: ModalController, 
+              public alertCtrl: AlertController, 
+              public navCtrl: NavController, 
+              public navParams: NavParams, 
+              public orderService: OrderServiceProvider) {
   
     this.lineItems = null;
+    this.shippingAddress = null;
+    this.nullWeightItems = 0;
         
     // load param from last page
     this.pickedOrder_orderId = navParams.get("pickedOrder_orderId");
@@ -36,6 +64,11 @@ export class PackPage {
         this.lineItems = data;
         
           for(let lineItem of this.lineItems) {
+
+            this.shipment.weight += parseInt(lineItem.quantity) * parseFloat(lineItem.grams);
+            if(parseInt(lineItem.grams) == 0) {
+              this.nullWeightItems++;
+            }
                       
             this.orderService.getProductImage(lineItem.product_id).then(data => {
             
@@ -52,33 +85,55 @@ export class PackPage {
         }
         
       });
+
+     // load shipping_address
+     this.orderService.loadShippingAddressByOrderId(this.pickedOrder_orderId).then(data => {
+        this.shippingAddress = data;
+        this.shipment.firstname = this.shippingAddress.first_name;
+        this.shipment.lastname = this.shippingAddress.last_name;
+        this.shipment.street = this.shippingAddress.address1;
+        this.shipment.streetno = this.shipment.street.split(' ')[(this.shipment.street.split(' ').length-1)];
+        this.shipment.street = this.shipment.street.replace(this.shipment.streetno,'');
+        this.shipment.city = this.shippingAddress.city;
+        this.shipment.plz = this.shippingAddress.zip;
+        this.shipment.country = this.shippingAddress.country;
+        this.shipment.telephone = this.shippingAddress.phone;
+        this.shipment.description = '#'+ this.pickedOrder_orderName;
+               
+    
+     }); 
         
 }
 
-tagAsPacked() {
-  
-  let alert = this.alertCtrl.create({
-    title: 'Tag as packed',
-    message: 'Are you sure to add a tag Packed to this order on shopify?',
-    buttons: [
-      {
-        text: 'Cancel',
-        role: 'cancel',
-        handler: () => {
-          
-        }
-      },
-      {
-        text: 'Ok',
-        handler: () => {
-          
-          this.orderService.updateOrdersTag(this.pickedOrder_orderId, 'tap2pick-packed');
-         
-        }
-      }
-    ]
-  });
-  alert.present();
+openShipModal() {
+  let myModal = this.modalCtrl.create(ShipPage, {'shipment': this.shipment, 'nullWeightItems': this.nullWeightItems.toString()});
+  myModal.present();
 }
+
+// tagAsPacked() {
+  
+//   let alert = this.alertCtrl.create({
+//     title: 'Tag as packed',
+//     message: 'Are you sure to add a tag Packed to this order on shopify?',
+//     buttons: [
+//       {
+//         text: 'Cancel',
+//         role: 'cancel',
+//         handler: () => {
+          
+//         }
+//       },
+//       {
+//         text: 'Ok',
+//         handler: () => {
+          
+//           this.orderService.updateOrdersTag(this.pickedOrder_orderId, 'tap2pick-packed');
+         
+//         }
+//       }
+//     ]
+//   });
+//   alert.present();
+// }
 
 }

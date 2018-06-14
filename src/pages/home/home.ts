@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {App, NavController, LoadingController, Loading } from 'ionic-angular';
+import {App, NavController, LoadingController, Loading, ModalController } from 'ionic-angular';
 import { OrderServiceProvider } from '../../providers/order-service/order-service';
 import { PickPage } from '../pick/pick';
 import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
@@ -21,7 +21,12 @@ export class HomePage {
   totalUnfulfilledOrders: number;
   loading: Loading;
 
-  constructor(private app: App,private secureStorage: SecureStorage, private loadingCtrl: LoadingController, public nav: NavController,  public orderService: OrderServiceProvider) {
+  constructor(private app: App,
+              private secureStorage: SecureStorage, 
+              private loadingCtrl: LoadingController, 
+              public nav: NavController,  
+              public orderService: OrderServiceProvider,
+              public modalCtrl: ModalController) {
     this.loadOrders();
     this.ordersToPick = new Array<number>();
     this.orderNameToPick = new Array<number>();
@@ -29,6 +34,10 @@ export class HomePage {
     this.orderService.countUnfulfilledOrders().then(data => {
       this.totalUnfulfilledOrders = <number> data;
     })
+
+    // this.orderService.loadShipLabel("c5b1811c1fd96b8e014c0fba4d0049f50d4ea23b").then(data => {
+    //   alert(data);
+    // })
 
   }
 
@@ -75,8 +84,11 @@ export class HomePage {
     }
 
   pick() {
-     // redirect to picking page
-     this.nav.push(PickPage, {ordersToPick: this.ordersToPick, ordersToPickName: this.orderNameToPick, productList: '', id: ''});
+    // redirect to picking page
+     //this.nav.push(PickPage, {ordersToPick: this.ordersToPick, ordersToPickName: this.orderNameToPick, productList: '', id: ''});
+
+      let myModal = this.modalCtrl.create(PickPage, {'ordersToPick': this.ordersToPick, 'ordersToPickName': this.orderNameToPick, 'productList': '', 'id': ''});
+      myModal.present();
   }  
 
   

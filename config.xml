@@ -84,4 +84,6 @@
     <plugin name="cordova-plugin-secure-storage" spec="^2.6.8" />
     <plugin name="phonegap-plugin-barcodescanner" spec="^7.1.1" />
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
+    <plugin name="cordova-plugin-firebase" spec="^1.0.0" />
+    <engine name="android" spec="7.0.0" />
 </widget>

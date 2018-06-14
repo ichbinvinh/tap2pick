@@ -2,15 +2,22 @@ page-pick {
 
     .ready-to-pack {
         position: fixed;
-        bottom: 10%;
-        right: 5%;
+        bottom: 80px;
+        right: 20px;
         z-index: 1000;
      } 
 
      .save-to-picking {
         position: fixed;
-        bottom: 10%;
-        right: 25%;
+        bottom: 80px;
+        right: 90px;
         z-index: 1000;
      }
+
+     .close {
+        position: fixed;
+        bottom: 80px;
+        right: 160px;
+        z-index: 1000;
+     } 
 }

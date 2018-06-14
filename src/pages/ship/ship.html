@@ -1,0 +1,128 @@
+<ion-header>
+
+    <ion-navbar>
+      <ion-buttons start>
+        <button ion-button (click)="dismiss()">Close</button>
+      </ion-buttons>
+      <ion-title>Create shipping label</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+
+<ion-content padding>
+
+    <form (ngSubmit)="createLabel()" #shipForm="ngForm">
+        <ion-row>
+          <ion-col>
+            <ion-list inset>
+                       
+              <ion-item>
+                  <ion-label>First name*</ion-label>
+                  <ion-input type="text" name="firstname" [(ngModel)]="shipment.firstname" required></ion-input>
+              </ion-item>
+              <ion-item>
+                  <ion-label>Last name*</ion-label>
+                  <ion-input type="text" name="lastname" [(ngModel)]="shipment.lastname" required></ion-input>
+              </ion-item>
+              <ion-item>
+                  <ion-label>Street*</ion-label>
+                  <ion-input type="text" name="street" [(ngModel)]="shipment.street" required></ion-input>
+              </ion-item>
+              <ion-item>
+                  <ion-label>Street no*</ion-label>
+                  <ion-input type="text" name="streetno" [(ngModel)]="shipment.streetno" required></ion-input>
+              </ion-item>
+              <ion-item>
+                  <ion-label>City*</ion-label>
+                  <ion-input type="text" name="city" [(ngModel)]="shipment.city" required></ion-input>
+              </ion-item>
+              <ion-item>
+                  <ion-label>Postal code*</ion-label>
+                  <ion-input type="text" name="plz" [(ngModel)]="shipment.plz" required></ion-input>
+              </ion-item>
+              <ion-item>
+                  <ion-label>Country*</ion-label>
+                  <ion-input type="text" name="country" [(ngModel)]="shipment.country" required></ion-input>
+              </ion-item>
+              <ion-item>
+                  <ion-label>Telephone</ion-label>
+                  <ion-input type="text" name="telephone" [(ngModel)]="shipment.telephone"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label>Weight of all items(kg)</ion-label>
+                <ion-input type="text" name="weight" [(ngModel)]="shipment.weight"></ion-input>
+              </ion-item>
+
+              <ion-item *ngIf="(nullWeightItems!=0)">
+                <ion-label color="danger">{{nullWeightItems}} items with 0 kg</ion-label>
+              </ion-item>
+
+              <ion-item>
+                  <ion-label>Package*</ion-label>
+                  <ion-select [(ngModel)]="shipment.package" name="package" required>
+                      <ion-option value="L">Large Pakett L:60cm W:50cm H:40cm, 31.00kg</ion-option>
+                      <ion-option value="M">Medium Pakett L:60cm W:50cm H:40cm, 5.00kg</ion-option>
+                      <ion-option value="S">Small Pakett L:30cm W:15cm H:15cm, 2.00kg</ion-option>
+                    </ion-select>
+              </ion-item>
+
+              <ion-item>
+                  <ion-label>Package description (max. 30 characters)</ion-label>
+                  <ion-input type="text" name="description" [(ngModel)]="shipment.description"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                  <ion-label>Carrier*</ion-label>
+                  <ion-select [(ngModel)]="shipment.carrier" name="carrier" required>
+                      <ion-option value="dhl">DHL</ion-option>
+                      <ion-option value="dpd">DPD</ion-option>
+                      <ion-option value="hermes">Hermes</ion-option>
+                      <ion-option value="ups">UPS</ion-option>
+                    </ion-select>
+              </ion-item>
+
+              <ion-item>
+                  <ion-label>Service*</ion-label>
+                  <ion-select [(ngModel)]="shipment.service" name="service" required>
+                      <ion-option value="standard" selected="true">Standard</ion-option>
+                      <ion-option value="returns">Returns</ion-option>
+                      <ion-option value="oneday">One Day</ion-option>
+                      <ion-option value="onedayearly">One Day Early</ion-option>
+                    </ion-select>
+              </ion-item>  
+
+              <ion-item>
+                  <ion-label>Package type*</ion-label>
+                  <ion-select [(ngModel)]="shipment.packagetype" name="packagetype" required>
+                      <ion-option value="parcel" selected="true">Parcel</ion-option>
+                      <ion-option value="bulk">Bulk</ion-option>
+                  </ion-select>
+              </ion-item>  
+
+                           
+            </ion-list>
+          </ion-col>
+        </ion-row>
+        
+        <!-- <ion-row>
+          <ion-col class="signup-col">
+            <button ion-button class="submit-btn"  full type="submit" (click)="createShipLabel()" [disabled]="!shipForm.form.valid">Create label</button>
+            <button ion-button class="cancel-btn" color="danger" full (click)="dismiss()">Cancel</button>
+          </ion-col>
+        </ion-row> -->
+      </form>
+
+</ion-content>
+
+<ion-fab>
+    <button (click)="createShipLabel()" [disabled]="!shipForm.form.valid" ion-fab fab-bottom fab-right>
+        <ion-icon name="barcode"></ion-icon>
+    </button>
+</ion-fab>
+    
+<ion-fab>
+    <button (click)="dismiss()" color="danger" class="delete" ion-fab fab-bottom fab-right>
+        <ion-icon name="close"></ion-icon>
+    </button>
+</ion-fab>

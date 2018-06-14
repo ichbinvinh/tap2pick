@@ -74,7 +74,8 @@ export class ProductList {
                 
                 this.productIdArr.push(product.id);
             } else {
-                this.productArr[idx].quantity += product.quantity; 
+                this.productArr[idx].quantity += product.quantity;
+                this.productArr[idx].origQuantity += product.quantity; 
                 this.tempProductArr[idx].quantity += this.tempProduct.quantity;
             }
       

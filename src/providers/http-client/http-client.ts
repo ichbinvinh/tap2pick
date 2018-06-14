@@ -15,6 +15,12 @@ export class HttpClientProvider {
     headers.append('Content-Type', 'application/json');
   }
 
+  createAuthorizationShipCloudHeader(headers: Headers) {
+    headers.append('Authorization', 'Basic ' + btoa('e405b08abad70f9768678065bbe1e943:asiasale@123'));
+    headers.append('Access-Control-Allow-Origin', '*' );
+    headers.append('Content-Type', 'application/json');
+  }
+
   get(url) {
     console.log(url);
     let headers = new Headers();
@@ -43,5 +49,19 @@ export class HttpClientProvider {
   //     headers: headers
   //   });
   // }
+
+  postShipCloud(url, data) {
+    let headers = new Headers();
+    this.createAuthorizationShipCloudHeader(headers);
+    return this.http.post(url, data, {
+      headers: headers
+    });
+  }
+
+  getShipCloud(url) {
+     let headers = new Headers();
+    this.createAuthorizationShipCloudHeader(headers);
+    return this.http.get(url, {headers: headers});
+  }
 
 }
